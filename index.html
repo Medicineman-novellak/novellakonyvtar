@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="hu"><head><meta charset="utf-8"/><meta content="width=device-width,initial-scale=1" name="viewport"/><title>Novellák könyvtára – Mandula vagy mogyoró?</title><style>
+*{box-sizing:border-box}body{margin:0;background:#120a06;color:#f5dfb6;font-family:Georgia,serif}.stage{position:relative;max-width:1675px;margin:auto}.stage img{width:100%;display:block}.overlay{position:absolute;inset:0;width:100%;height:100%}.spine{cursor:default;outline:none;pointer-events:none}.band{fill:#982b3b;opacity:.98;pointer-events:none;filter:drop-shadow(0 1px 1px #120705)}.hit{fill:transparent;pointer-events:all}.spine:hover .band,.spine:focus .band{fill:#d24a5c}.spine:focus-visible .hit{stroke:#edc77b;stroke-width:2}.tip{position:fixed;z-index:8;display:none;pointer-events:none;padding:9px 14px;background:#24160ff5;border:1px solid #c49b63;border-radius:4px;box-shadow:0 8px 22px #000b;color:#f6e6ca;font-size:17px}.tip.on{display:block}.hint{position:fixed;z-index:2;top:12px;left:50%;transform:translateX(-50%);background:#20120ce8;border:1px solid #967347;border-radius:5px;padding:9px 14px;text-align:center;font-size:14px;pointer-events:none}.reader{display:none;position:fixed;inset:0;z-index:12;background:#120c08ee;align-items:center;justify-content:center;padding:16px;overflow:auto}.reader.open{display:flex}.desk{width:min(1030px,100%);padding:26px;background:linear-gradient(140deg,#5c321b,#27160e 45%,#54301c);border:12px ridge #6c4429;box-shadow:0 20px 70px #000}.book{display:grid;grid-template-columns:1fr 1fr;min-height:480px;border:11px solid #64331e;border-radius:8px 20px 20px 8px;background:#b99563;box-shadow:0 16px 26px #0009,inset 0 0 25px #79502d;color:#382519}.page{padding:38px 34px;line-height:1.85;background:linear-gradient(90deg,#9f7648 0%,#d5b58a 9%,#d9bd94 73%,#a77c4b 100%);box-shadow:inset -15px 0 25px #9e6d3470}.page+.page{background:linear-gradient(90deg,#946b42,#d4b38a 15%,#ddc29a 90%,#a37a4c);box-shadow:inset 15px 0 28px #90602e70}.page h1{font-size:27px}.buttons{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:18px;flex-wrap:wrap}.buttons button{background:#422616;color:#f5dfb8;border:1px solid #b08c56;padding:12px 20px;font:inherit;cursor:pointer}.note{font-size:13px;color:#d6b88b}@media(max-width:650px){.hint{width:92%;font-size:12px}.desk{padding:9px;border-width:7px}.book{grid-template-columns:1fr;min-height:370px}.page{padding:20px}.page+.page{display:none}}
+
+/* Olvasó: az eredeti képen látható zöld bőrbetétes íróasztal */
+.reader{background:linear-gradient(180deg,rgba(12,8,5,.30),rgba(12,8,5,.12)),var(--desk-scene) center center / cover no-repeat; padding:65px 24px 28px}
+.reader .desk{width:min(1000px,95vw);background:transparent;border:0;box-shadow:none;padding:0;position:relative;transform:translateY(9%)}
+.reader .book{min-height:420px;max-height:min(68vh,680px);overflow:auto;box-shadow:0 18px 20px #120a06aa,0 0 0 7px #4b2b1b,0 0 0 10px #a47640;}
+.reader .exit{position:fixed;right:24px;top:20px;z-index:30;background:#38251b;color:#f8e8c7;border:1px solid #b89359;border-radius:5px;padding:12px 18px;font:600 16px Georgia,serif;cursor:pointer;box-shadow:0 4px 12px #0008}
+.reader .exit:hover,.reader .exit:focus-visible{background:#633b2b;outline:2px solid #e7bf7a}
+.reader .buttons{background:#27180fdb;border:1px solid #a47b4b;padding:10px 15px;border-radius:5px;margin-top:22px}
+@media(max-width:650px){.reader{padding:70px 12px 20px;background-position:center center}.reader .desk{transform:none}.reader .book{max-height:65vh}.reader .exit{right:12px;top:12px}}
+
+/* Valódi könyvérzetű lapozó */
+.reader .desk{width:min(1050px,96vw)}
+.reader .book{position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:490px;height:min(65vh,610px);max-height:none;overflow:visible;border:13px solid #4d281b;border-radius:11px 24px 24px 10px;background:#7c4b2d;box-shadow:0 25px 45px #090502d9,0 0 0 5px #a67d4b,0 0 0 10px #3b2115;perspective:1500px;isolation:isolate}
+.reader .book:before{content:"";position:absolute;inset:7px -5px -7px 4px;border-radius:5px 18px 18px 5px;background:repeating-linear-gradient(0deg,#a98b65 0 1px,#e0c69b 1px 3px,#9d7950 3px 4px);z-index:-1;box-shadow:0 6px 0 #654028}
+.reader .book:after{content:"";position:absolute;left:50%;top:0;bottom:0;width:28px;transform:translateX(-50%);pointer-events:none;z-index:4;background:linear-gradient(90deg,transparent,#51331c55 28%,#3d271a88 48%,#fff2c021 55%,transparent)}
+.reader .page{position:relative;min-width:0;padding:48px 44px 36px;overflow:hidden;display:flex;flex-direction:column;color:#3a2719;background:linear-gradient(90deg,#99724b 0%,#c6a57b 8%,#d7ba91 27%,#d5b48a 70%,#b38b5e 100%);box-shadow:inset 0 0 34px #5b371f55,inset -15px 0 30px #58391f45}
+.reader .page+.page{background:linear-gradient(90deg,#a47c50 0%,#d2b189 13%,#d9bd94 62%,#b18b5d 94%,#8c643d 100%);box-shadow:inset 15px 0 35px #54321c55,inset -10px 0 22px #56391e3d}
+.reader .page:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.13;background:repeating-linear-gradient(9deg,transparent 0 5px,#694c2c 6px,transparent 7px 13px)}
+.reader .page-content{position:relative;flex:1;overflow:auto;scrollbar-width:thin;scrollbar-color:#96764f transparent;font:17px/1.85 Georgia,serif;text-align:justify;hyphens:auto}
+.reader .page-content p{margin:0 0 1em;text-indent:1.15em}.reader .page-content p:first-of-type{text-indent:0}
+.reader .page-content h1{font-size:clamp(21px,2.2vw,31px);font-weight:normal;line-height:1.25;text-align:center;margin:23px 0 30px}.reader .page-content .ornament{text-align:center;letter-spacing:.25em;color:#76532f;font-size:12px}
+.reader .page-number{position:relative;margin-top:12px;text-align:center;font-size:13px;color:#69482b}
+.reader .page-edge{position:absolute;top:0;bottom:0;width:37px;z-index:5;cursor:pointer;border:0;background:transparent;color:#5d3c23;opacity:.4;font-size:32px;transition:opacity .2s,background .2s}
+.reader .page-edge:hover,.reader .page-edge:focus-visible{opacity:1;background:#a4784033}.reader .page-edge.prev{left:0}.reader .page-edge.next{right:0}
+.reader .book.turn-next .page:last-of-type{animation:flipForward .55s ease-in-out;transform-origin:left center}.reader .book.turn-prev .page:first-of-type{animation:flipBackward .55s ease-in-out;transform-origin:right center}
+@keyframes flipForward{0%{transform:rotateY(0deg)}45%{transform:rotateY(-28deg);filter:brightness(.76)}100%{transform:rotateY(0deg)}}
+@keyframes flipBackward{0%{transform:rotateY(0deg)}45%{transform:rotateY(28deg);filter:brightness(.76)}100%{transform:rotateY(0deg)}}
+.reader .buttons{justify-content:center;gap:15px}.reader .buttons button:disabled{opacity:.4;cursor:not-allowed}.reader .buttons .note{min-width:115px;text-align:center}
+@media(max-width:650px){.reader .book{height:min(65vh,540px);min-height:360px;grid-template-columns:1fr}.reader .page{padding:30px 34px 22px}.reader .page+.page{display:none}.reader .page-content{font-size:16px}.reader .buttons{gap:7px;padding:8px}.reader .buttons button{padding:10px 12px}.reader .book:after{display:none}}
+@media(prefers-reduced-motion:reduce){.reader .book.turn-next .page:last-of-type,.reader .book.turn-prev .page:first-of-type{animation:none}}
+
+/* Finoman rétegzett papírélek és ívelt, valódi lapfordítás */
+.reader .book{transform-style:preserve-3d;perspective:2300px}
+.reader .book:before{inset:8px -10px -11px 3px;background:repeating-linear-gradient(0deg,#765033 0px,#b69a72 1px,#e0cba5 2px,#a6865e 3px,#d9b88c 4px);border-radius:6px 18px 19px 6px;box-shadow:2px 8px 0 #6c452b,0 13px 7px #160d09a8}
+.reader .page{border-bottom:3px solid #9d754d;transform-style:preserve-3d}
+.reader .page:first-of-type{border-radius:10px 2px 3px 12px;clip-path:polygon(0 1%,3% 0,98% 1%,100% 2%,100% 99%,4% 100%,0 98%)}
+.reader .page:nth-of-type(2){border-radius:2px 12px 12px 3px;clip-path:polygon(0 2%,97% 0,100% 2%,99% 97%,95% 100%,0 99%)}
+.reader .page:after{content:'';position:absolute;right:0;top:0;bottom:0;width:18px;pointer-events:none;background:linear-gradient(90deg,transparent,#f7dbac25 40%,#67482a33)}
+.reader .page:nth-of-type(2):after{right:auto;left:0;transform:scaleX(-1)}
+.reader .book:after{z-index:7}
+.flip-sheet{position:absolute;top:0;bottom:0;left:50%;width:50%;z-index:6;transform-origin:left center;transform-style:preserve-3d;pointer-events:none;filter:drop-shadow(0 8px 5px #25140855);will-change:transform}
+.flip-sheet.backward{left:0;transform-origin:right center}
+.flip-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;padding:48px 44px 36px;display:flex;flex-direction:column;color:#3a2719;background:linear-gradient(90deg,#a47c50,#d2b189 13%,#d9bd94 62%,#b18b5d 94%,#8c643d);box-shadow:inset 12px 0 25px #54321c44,inset -12px 0 22px #54321c33;border-bottom:3px solid #9d754d}
+.flip-face.back{transform:rotateY(180deg);background:linear-gradient(90deg,#967047,#c4a077 13%,#d9bc93 75%,#ad8559);box-shadow:inset -12px 0 32px #54321c55}
+.flip-sheet.backward .flip-face{background:linear-gradient(90deg,#99724b,#d7ba91 28%,#b38b5e)}
+.flip-sheet.backward .flip-face.back{background:linear-gradient(90deg,#a47c50,#d2b189 15%,#d9bd94 72%,#a98254)}
+.flip-face:after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,#37221455,transparent 23%,#fff3d62b 52%,transparent 79%,#39251855);opacity:0;animation:paperLight 1.25s ease-in-out forwards}
+.flip-sheet.forward{animation:paperForward 1.25s cubic-bezier(.35,.03,.22,1) forwards}
+.flip-sheet.backward{animation:paperBackward 1.25s cubic-bezier(.35,.03,.22,1) forwards}
+.flip-sheet .page-content{overflow:hidden}
+.flip-sheet .page-number{margin-top:12px}
+@keyframes paperForward{0%{transform:rotateY(0deg) skewY(0deg) scaleX(1)}20%{transform:rotateY(-25deg) skewY(-1.2deg) scaleX(.98)}48%{transform:rotateY(-86deg) skewY(1.6deg) scaleX(.91)}70%{transform:rotateY(-145deg) skewY(-1deg) scaleX(.98)}100%{transform:rotateY(-180deg) skewY(0deg) scaleX(1)}}
+@keyframes paperBackward{0%{transform:rotateY(0deg) skewY(0deg) scaleX(1)}20%{transform:rotateY(25deg) skewY(1.2deg) scaleX(.98)}48%{transform:rotateY(86deg) skewY(-1.6deg) scaleX(.91)}70%{transform:rotateY(145deg) skewY(1deg) scaleX(.98)}100%{transform:rotateY(180deg) skewY(0deg) scaleX(1)}}
+@keyframes paperLight{0%{opacity:.12}35%{opacity:.8}55%{opacity:1}80%{opacity:.65}100%{opacity:.12}}
+@media(max-width:650px){.flip-sheet{left:0;width:100%}.flip-face{padding:30px 34px 22px}}
+@media(prefers-reduced-motion:reduce){.flip-sheet.forward,.flip-sheet.backward{animation-duration:.01ms}.flip-face:after{animation:none}}
+
+/* Szellő által átlibbentett lap: 14 külön hajló papírsáv, folyamatos mozgás */
+.reader .book{perspective:2600px}
+.wind-sheet{position:absolute;inset:0 0 0 50%;width:50%;z-index:8;pointer-events:none;transform-style:preserve-3d;filter:drop-shadow(-2px 5px 5px #26160955)}
+.wind-sheet.backward{left:0}
+.wind-strip{position:absolute;top:0;height:100%;width:7.142857%;transform-style:preserve-3d;transform-origin:left center;will-change:transform;backface-visibility:visible}
+.wind-face{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-bottom:3px solid #9d754d;background:#d5b48a}
+.wind-face.back{transform:rotateY(180deg)}
+.wind-face-inner{position:absolute;top:0;width:1400%;height:100%;padding:48px 44px 36px;display:flex;flex-direction:column;color:#3a2719;background:linear-gradient(90deg,#a47c50 0%,#d2b189 13%,#d9bd94 62%,#b18b5d 94%,#8c643d 100%);box-shadow:inset 15px 0 28px #54321c33,inset -12px 0 20px #54321c33}
+.wind-face.back .wind-face-inner{background:linear-gradient(90deg,#967047,#c4a077 13%,#d9bc93 75%,#ad8559)}
+.wind-face-inner:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,#3b241b55,transparent 25%,#fff2d64a 52%,transparent 80%,#3b241b40);opacity:var(--glow,.2);pointer-events:none}
+.wind-face-inner .page-content{flex:1;overflow:hidden;font:17px/1.85 Georgia,serif;text-align:justify;hyphens:auto}
+.wind-face-inner .page-number{margin-top:12px;text-align:center;font-size:13px}
+.wind-sheet .wind-strip:first-child .wind-face{border-radius:3px 0 0 4px}
+.wind-sheet .wind-strip:last-child .wind-face{border-radius:0 11px 10px 0}
+@media(max-width:650px){.wind-sheet{left:0;width:100%}.wind-face-inner{padding:30px 34px 22px}.wind-face-inner .page-content{font-size:16px}}
+@media(prefers-reduced-motion:reduce){.wind-strip{transition:none!important}}
+
+/* Mesekönyv: egyetlen, folyamatosan átforduló papírlap */
+.storybook-sheet{position:absolute;top:0;bottom:0;left:50%;width:50%;z-index:9;pointer-events:none;transform-origin:0 50%;transform-style:preserve-3d;will-change:transform;filter:drop-shadow(0 9px 8px rgba(45,24,10,.28))}
+.storybook-sheet.backward{left:0;transform-origin:100% 50%}
+.storybook-face{position:absolute;inset:0;display:flex;flex-direction:column;padding:48px 44px 36px;overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;color:#3a2719;border-bottom:3px solid #9d754d;border-radius:2px 10px 11px 2px;background:linear-gradient(90deg,#a57c50 0%,#d0af85 12%,#dbc098 52%,#d1ae81 91%,#9d7349 100%);box-shadow:inset 11px 0 27px #4e311c36,inset -13px 0 26px #51351d33}
+.storybook-face.back{transform:rotateY(180deg);background:linear-gradient(90deg,#9c7349,#d1ad83 11%,#dbc099 60%,#c49d72 92%,#92683f)}
+.storybook-face:after{content:'';position:absolute;inset:0;pointer-events:none;opacity:calc(.08 + var(--paper-arch,0)*.5);background:linear-gradient(90deg,#3c241c65 0%,transparent 23%,#fff0cc65 51%,transparent 76%,#42291c5c 100%)}
+.storybook-face .page-content{flex:1;overflow:hidden;font:17px/1.85 Georgia,serif;text-align:justify;hyphens:auto}
+.storybook-face .page-number{margin-top:12px}
+@media(max-width:650px){.storybook-sheet{left:0;width:100%}.storybook-face{padding:30px 34px 22px}.storybook-face .page-content{font-size:16px}}
+ .reader .page-content{font-size:clamp(13px,1.12vw,16px);line-height:1.63}.reader .page-content h1{margin:8px 0 18px;font-size:clamp(19px,2vw,26px)} .reader .page-content .epigraph{font-size:15px;line-height:1.65;font-style:italic;text-indent:0;text-align:left;margin-top:12px}
+.reader .page-content .attribution{font-size:14px;text-align:right;text-indent:0;margin-top:12px}
+.reader .page-content p{overflow-wrap:break-word}
+
+
+/* Könyvtári katalógus – finom réz és bőr */
+.catalog{position:fixed;z-index:9;left:18px;bottom:20px;width:min(340px,calc(100vw - 36px));padding:16px 18px;background:linear-gradient(135deg,#332217f5,#1d140ff5);border:1px solid #b18a52;box-shadow:0 12px 40px #000b, inset 0 0 0 3px #4a3021;border-radius:5px;color:#efdcba}
+.catalog .ctitle{letter-spacing:.14em;text-align:center;font-size:14px;color:#e1c396;margin-bottom:12px}.catalog form{display:flex;gap:8px}.catalog input{min-width:0;width:100%;background:#e6d4b1;border:1px solid #9d7a4e;color:#372418;padding:10px;font:17px Georgia,serif;border-radius:2px}.catalog button,.catalog .openresult{background:#65442b;color:#f7e8c7;border:1px solid #bd9866;padding:9px 13px;font:15px Georgia,serif;cursor:pointer}.catalog button:hover{background:#8b6140}.catalog .result{font-size:13px;line-height:1.5;color:#dbc59f;margin-top:11px;min-height:20px}.catalog .openresult{display:none;margin-top:9px;width:100%}.catalog .openresult.show{display:block}.catalog .small{font-size:11px;opacity:.75;margin-top:10px}.shelf-tags{position:absolute;inset:0;pointer-events:none}.shelf-tag{position:absolute;transform:translateY(-50%);white-space:nowrap;z-index:3;background:linear-gradient(165deg,#d4b47d 0%,#aa7b45 21%,#80542c 57%,#bd925c 100%);border:1px solid #e3c493;box-shadow:0 1px 3px #10090599,inset 0 0 0 1px #6c4728,inset 0 1px 1px #f0d5a266;color:#2f2012;font:600 clamp(7px,.68vw,10px) Georgia,serif;letter-spacing:.045em;padding:.16em .38em;border-radius:1px;text-shadow:0 1px 0 #e7c48a77}.spine.catalog-highlight .band{fill:#f2be70!important;filter:drop-shadow(0 0 8px #ffcf75)}.catalog .help{font-size:12px;color:#d7c09c;margin:0 0 8px}@media(max-width:700px){.catalog{position:relative;left:auto;bottom:auto;width:auto;margin:10px}.shelf-tag{font-size:7px}}
+
+/* A katalógus csak a nagyító megnyomásakor látható. */
+.catalog{display:none;position:fixed;left:64px;bottom:22px;z-index:20}
+.catalog.is-visible{display:block}
+.catalog-toggle{position:fixed;left:18px;bottom:22px;z-index:21;width:44px;height:44px;display:grid;place-items:center;background:linear-gradient(140deg,#76532f,#382516);color:#f3dbad;border:1px solid #d4af72;border-radius:50%;box-shadow:0 4px 16px #000a;cursor:pointer}
+.catalog-toggle:hover,.catalog-toggle:focus-visible{background:#906b42;outline:2px solid #e7c997;outline-offset:2px}
+.catalog-toggle svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.reader.open~.catalog-toggle{display:none}
+@media(max-width:700px){.catalog{position:fixed;left:12px;bottom:74px;width:min(340px,calc(100vw - 24px));max-height:70vh;overflow:auto}.catalog-toggle{left:14px;bottom:16px}}
+
+/* Jól olvasható, a polc élére rögzített antik réztáblák */
+.shelf-tag{transform:translateY(-50%);min-width:5.5%;text-align:center;white-space:nowrap;background:linear-gradient(180deg,#f2d6a0 0%,#c99753 13%,#aa7339 48%,#d3a56b 80%,#8d592e 100%);color:#271607;border:1px solid #f6d69b;border-bottom:2px solid #59371c;border-radius:3px;box-shadow:0 2px 4px #000b,inset 0 0 0 1px #6d4624,inset 0 2px 2px #fff0c16b;font:700 clamp(10px,.91vw,15px)/1.2 Georgia,serif;letter-spacing:.035em;padding:.3em .55em;text-shadow:0 1px 0 #f4d29b}
+.shelf-tag::before,.shelf-tag::after{content:"";position:absolute;top:50%;width:3px;height:3px;transform:translateY(-50%);border-radius:50%;background:#56381c;box-shadow:inset 0 0 1px #f5d89c}
+.shelf-tag::before{left:3px}.shelf-tag::after{right:3px}
+@media(max-width:700px){.shelf-tag{font-size:clamp(7px,1.5vw,11px);padding:.25em .38em}}
+
+/* A jelölések pozíciója mindig a könyvtárképhez igazodik. */
+.stage{aspect-ratio:1675/939}.stage>img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.stage>.shelf-tags{z-index:4}.stage>.overlay{z-index:2}
+</style></head><body><div class="hint">A kis bordó jelzéssel ellátott könyvek nyithatók meg. Vidd föléjük az egeret!</div><button aria-controls="catalog" aria-expanded="false" aria-label="Novella keresése" class="catalog-toggle" id="catalogToggle" title="Novella keresése" type="button"><svg aria-hidden="true" viewbox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.7"></circle><path d="m16 16 5 5"></path></svg></button><aside aria-label="Könyvtári katalógus" class="catalog" id="catalog"><div class="ctitle">❦   KÖNYVTÁRI KATALÓGUS   ❦</div><p class="help">Emlékszel a novella számára? Keresd meg itt.</p><form id="catalogForm"><input aria-label="Novella sorszáma" id="catalogNumber" max="150" min="1" placeholder="Például: 67" type="number" value="67"/><button type="submit">Ugrás</button></form><div class="result" id="catalogResult">Írd be a sorszámot, majd kattints az Ugrás gombra.</div><button class="openresult" id="catalogOpen" type="button">A könyv megnyitása</button><div class="small">Bemutató: 150 számozott hely · az új tíz külön polcon</div></aside><main class="stage"><img alt="Antik könyvtár, a polcperemre csavarozott réztáblákkal" src="kep-1.png"/><svg aria-label="Kattintható könyvek" class="overlay" preserveaspectratio="xMidYMid meet" viewbox="0 0 1675 939"><g aria-label="Az utolsó levél" class="spine" data-i="0" role="button" tabindex="0"><polygon class="band" points="270.5,60.0 277.5,60.0 277.5,64.0 270.5,64.0"></polygon><polygon class="hit" points="266,57 282,57 282,173 266,173"></polygon></g><g aria-label="A régi óra" class="spine" data-i="1" role="button" tabindex="0"><polygon class="band" points="385.5,65.0 392.5,65.0 392.5,69.0 385.5,69.0"></polygon><polygon class="hit" points="380,62 398,62 398,173 380,173"></polygon></g><g aria-label="Egy nyári délután" class="spine" data-i="2" role="button" tabindex="0"><polygon class="band" points="688.5,56.0 695.5,56.0 695.5,60.0 688.5,60.0"></polygon><polygon class="hit" points="682,53 702,53 702,173 682,173"></polygon></g><g aria-label="A találkozás" class="spine" data-i="3" role="button" tabindex="0"><polygon class="band" points="821.5,49.0 828.5,49.0 828.5,53.0 821.5,53.0"></polygon><polygon class="hit" points="813,46 837,46 837,173 813,173"></polygon></g><g aria-label="Csend a kertben" class="spine" data-i="4" role="button" tabindex="0"><polygon class="band" points="1247.0,60.0 1254.0,60.0 1254.0,64.0 1247.0,64.0"></polygon><polygon class="hit" points="1240,57 1261,57 1261,174 1240,174"></polygon></g><g aria-label="A másik part" class="spine" data-i="5" role="button" tabindex="0"><polygon class="band" points="1411.5,61.0 1418.5,61.0 1418.5,65.0 1411.5,65.0"></polygon><polygon class="hit" points="1406,58 1424,58 1424,174 1406,174"></polygon></g><g aria-label="Az elfelejtett név" class="spine" data-i="6" role="button" tabindex="0"><polygon class="band" points="665.0,241.0 672.0,241.0 672.0,245.0 665.0,245.0"></polygon><polygon class="hit" points="659,238 678,238 678,342 659,342"></polygon></g><g aria-label="A kulcs" class="spine" data-i="7" role="button" tabindex="0"><polygon class="band" points="896.0,212.0 903.0,212.0 903.0,216.0 896.0,216.0"></polygon><polygon class="hit" points="891,209 908,209 908,341 891,341"></polygon></g></svg></main><div class="tip" id="tip"></div><section aria-label="Novella olvasása" aria-modal="true" class="reader" id="reader" role="dialog" style="--desk-scene:url('kep-2.png')"><button aria-label="Kilépés az olvasóból" class="exit" id="exit" type="button">✕ Kilépés</button><div class="desk"><div class="book" id="openBook"><div class="page" id="leftPage"><div class="page-content" id="leftContent"></div><div class="page-number" id="leftNumber"></div></div><div class="page" id="rightPage"><div class="page-content" id="rightContent"></div><div class="page-number" id="rightNumber"></div></div><button aria-label="Előző oldalpár" class="page-edge prev" id="edgePrev">‹</button><button aria-label="Következő oldalpár" class="page-edge next" id="edgeNext">›</button></div><div class="buttons"><button id="prev" type="button">← Előző</button><span aria-live="polite" class="note" id="pageStatus">1–2. oldal</span><button id="next" type="button">Következő →</button><button id="close" type="button">Becsukom a könyvet ↩</button></div></div></section><script>
+const titles=["Mandula vagy mogyoró?", "A régi óra", "Egy nyári délután", "A találkozás", "Csend a kertben", "A másik part", "Az elfelejtett név", "A kulcs"];
+const tip=document.getElementById('tip'),reader=document.getElementById('reader'),book=document.getElementById('openBook');
+const left=document.getElementById('leftContent'),right=document.getElementById('rightContent');
+let last=null,spread=0,current=0,turning=false;
+const samplePages=["<div class=\"ornament\">❦</div><h1>Mandula vagy mogyoró?</h1><p class=\"epigraph\">„A logikai módszereket tárgyaló tudósok azt a benyomást teszik reám, mint az a szónok, aki ékesszólását a beszédcentrumok, a hangképzés és a gége beidegzésének tanulmányozásával akarná fejleszteni. Mint hogyha ezen bonc- és élettani folyamatok ismerete pótolhatná a hiányzó tehetséget, vagy akár megjavíthatná azt, amivel bírunk!”</p><p class=\"attribution\">Santiago Ramón y Cajal</p>", "<p>Hangzott el az első kérdés. Mondjuk baromira nem mindegy, ki kérdezi. A sebész vagy a cukrász. Sebésznél a mogyoró mindenképpen rossz válasznak tűnik. Nem tudok olyan testrészemről, amit mogyorónak hívnak, bár a herék általánosan használt szleng szinonimája lehet mogyoró, de nőként nincs olyanom. És ha ő tud valamit, amit én nem? Akkor valószínűleg jobb lett volna otthon maradnom. Cukrásznál egyszerűbb. Mogyoró. Bár ez sem teljesen igaz. Attól függ, miben, darabolt, vágott, őrölt, pirított?</p>", "<p>Mogyoró, mondtam ki végül kicsit félénken. Ühüm, bólintott rá. Nem úgy, mint aki örül neki. Inkább úgy, mint aki tudomásul vett valamit. Nem szeretem, amikor az emberek így bólintanak. Fura jelentése van számomra. Az orvosok szoktak. Meg az autószerelők. Mindkettő után súlyosan zsebbe kell nyúlni. De aztán ő nyúlt a zsebébe váratlanul és letett elém egy kis dobozt.</p>", "<p>Ezt tegnap csináltam. Na, remek, tehát egyik sem. Ezek szerint cukrász és nem orvos. Bárcsak figyeltem volna tegnap, de munka közben hívott Éva, és fél perc alatt eldarálta, hogy orvos. Meg hogy negyvenkettő, elvált, nincs gyereke, magas, normális és „szerintem neked való”. Éva szerint nekem mindenki való, aki elmúlt harmincöt, rendelkezik saját fogakkal és nem lakik az anyjával. Az évek múlásával látványosan lejjebb adta az igényeimet. A férfi közben engem nézett.</p>", "<p>Várta, hogy megkóstoljam. Macaron volt. Vékonyan csorgatott, csokoládés csíkok a tetején, mogyorós belső, szabályosan kerek, fényes tükröződő felület. Túl szabályosan nézett ki, talán kényszeresen tökéletesen. Egyszer én is próbáltam macaront sütni. A tepsin úgy néztek ki, mint egy súlyos bőrbetegség különböző stádiumai. Beleharaptam. Jó? kérdezte pár másodperc után. Naaon, vágtam rá tele szájjal. Tényleg nagyon jó volt. Kemény és puha egyszerre, egy intenzív ízorgiával.</p>", "<p>Várt pár másodpercet és folytatta. Szeretek precízen dolgozni, mondta és elmosolyodott. De nem kellett volna. A mondat előtt egész bizalomgerjesztő volt, de most, furán bizarr volt tőle. Persze, miért ne lenne fura? Orvos. azok nem mosolyognak, mert nagyon komolyak. Milyen területen dolgozol? kérdeztem érdeklődve. Elég speciális, jött egy homályos válasz. Ezt az orvosok biztosan azért mondják, hogy az ember ne kérdezzen tovább. Vagy lehet, hogy pont azért, hogy kérdezzen.</p>", "<p>Belementem a játékba és kérdeztem. Sebészet? Elmosolyodott, szemében megcsillant az érdeklődés és kicsit a büszkeség is. Valami olyasmi, felelte homályosan. Kezdtem megelégelni, nem vagyok gondolatolvasó. Valami olyasmi. Mi az, hogy valami olyasmi? Vagy sebész valaki, vagy nem. Senki nem mondja, hogy könyvelő vagyok, valami olyasmi. Bár Éva egyszer összehozott egy férfival, aki azt mondta, a pénzügyi szektorban dolgozik, aztán kiderült, hogy sportfogadási tippeket árul Telegramon.</p><p>Szereted? kérdeztem. Ó, nagyon, felelte lelkesen. Kézzel szeretek dolgozni, folytatta.</p>", "<p>Ránéztem a kezére. Hosszú ujjak, rövid körmök, semmi gyűrű. Szép kéz, talán kicsit fehérebb az átlagnál. Sebészkeze van, gondoltam, bár fogalmam sincs, milyen a sebész keze. Nyilván nem olyan, mint egy kőművesé. Remélhetőleg nem remeg. Az övé nem remegett. Tovább puhatolóztam. Nem monoton?</p>", "<p>Kifejezetten állíthatom, hogy nem. Nincs két egyforma eset. válaszolta immár kicsit konkrétabban, de még mindig képlékenyen. Ránéztem és kilövelt a számból a homályos célzás. Gondolom idővel kialakul a rutin, kérdeztem. A válaszra nem kellett sokat várni. Tudod, hol kell kezdeni, hogyan érdemes hozzáférni. Utána már sokkal könnyebb. A fenébe, ez mit jelenthet. Letettem a macaront. Nem is tudom, miért.</p><p>Hiszen orvos. Az orvosok hozzáférnek dolgokhoz. Ez a munkájuk. Ugyan már lazíts egy kicsit, gondoltam.</p>", "<p>Megpróbáltam használható információt kihúzni belőle, kerestem egy konkrétabb kérdést. És bírod a vért? Felkacagott. Muszáj, bár sokkal kevesebb folyik szét, mint a filmekben, válaszolta vidáman. Jó. Sebész. Megnyugodtam. Mondjuk nem teljesen értem, mitől nyugodtam meg attól, hogy egy idegen férfi közölte velem, hogy jól bírja a vért, de mindegy is.</p>", "<p>Engem tulajdonképpen inkább, a belső dolgok érdekelnek, folytatta mintha eddig nem lett volna így is elég bizarr ez a beszélgetés. Na jó. Kortyoltam a borból egy nagyobbat. Éva azt mondta, normális. Ezt most megpróbáltam felidézni pontosan. Azt mondta, teljesen normális, vagy csak azt, hogy normális? Nem mindegy. A teljesen normális még Évától is minimum fenntartásokkal elfogadható. A normális egyszerű általános adatközlés csak információtartalom nélkül, némi elfogultsággal párosítva.</p>", "<p>Megfordult a kérdezés, most én kerültem terítékre. És te - kérdezte bizonytalanul - szereted, amit csinálsz? Beszéltem neki a munkámról. Figyelt. Tényleg figyelt. Nem nézett közben a telefonjára, nem próbálta visszafordítani magára a beszélgetést, és egyszer sem mondta azt, hogy én nagyon spirituális ember vagyok, meg jó hogy önmegvalósítasz és hogy igazán erős nő vagy. Ez jelentős előrelépés volt az előző három randihoz képest, lehet, hogy mégis normális? Talán Évának igaza van. Rendeltünk még egy pohár bort. Aztán valahogy megint a munkájáról beszéltünk.</p>", "<p>A legnehezebb – mondta – amikor már nagyon rossz állapotban kerül hozzánk. Elhiszem, vágtam rá azonnal, mert végülis láttam a vészhelyzet összes részét, erről van elképzelésem. Olyankor néha órákig dolgozunk rajta folytatta a mondanivalóját. Na ácsi, a Vészhelyzetben gyorsabb volt fél óra alatt mindenkit megmentettek, vagy letakartak. Az kemény lehet mondtam csak rá úgy egykedvűen, valamit mégiscsak reagálni kellett. Áh, megszokja az ember, jött a gyors határozott talán begyakorolt válasz.</p>", "<p>Na ezt nem szerettem. Nem azért, amit mondott. Hanem ahogy. Nyugodtan. Túl nyugodtan, higgadtan, már-már hidegvérűen. Én egy döglött galambot sem tudok megszokni az út szélén. Kikerülöm, aztán még kétszáz méter múlva is arra gondolok, hogy reggel az a galamb még valószínűleg teljesen normális galambügyeket intézett, aztán elcsapták, vagy levadászta egy macska. Ez az ember meg órákig dolgozik nagyon rossz állapotban lévő embereken, aztán hazamegy macaront sütni. Lehet hogy egy pszichopata? Talán tényleg így lehet csak kibírni a stresszes munkákat. Ki tudja</p>", "<p>manapság. Más meg fut, vagy épp iszik, ő meg habzsákból nyomja ki a traumát a tepsire. Tulajdonképpen egészséges megoldás a stresszlevezetésre.</p><p>És nem viszed haza fejben? – kérdeztem, de csak úgy kibuggyant belőlem. Elgondolkodott. Mi a fenén gondolkodik? Kisvártatva megjött a desztillálódott tiszta esszencia válaszként. Az elején hazavittem. Most már ott tudom hagyni.</p>", "<p>Bólintottam. Ez szép, végre egy érett gondolkodású pali. Professzionális. Aztán hozzátette, muszáj különválasztani a munkát attól, ami otthon van. Miért mi van otthon? Megint itt van ez a bizarr légkör körülötte. Valamiért megint ránéztem a kezére. De hülye vagyok, Évának igaza van végre egy normális pali. Egy sebész ül velem szemben. Egy kedves, intelligens, jóképű sebész, aki macaront süt. Ez gyakorlatilag főnyeremény. Éva egyszer az életben eltalálta. Egyébként milyen sebész vagy? – kérdeztem rá konkrétan, itt az idő fellebbenteni a fátylat.</p>", "<p>Megállt a pohár a kezében. Sebész? kérdezte felvonva a szemöldökét. Azt mondtad, valami olyasmi, vágtam rá, kicsit félve. Ha nem az vagy, akkor mi? Borbély? Nevetett egy jót. Én már megint nem.</p><p>Nem vagyok sebész. mondta mikor kicsit lecsendesedett.</p>", "<p>Érdekes, milyen gyorsan tud az emberi agy visszamenőleg újraértékelni egy teljes estét. Összegeztem magamban, amit eddig hallottam tőle. Kézzel szeretek dolgozni. Jól bírom a vért. Engem a belső dolgok érdekelnek. Tudod, hol kell kezdeni, hogyan érdemes hozzáférni. Most már ott tudom hagyni. Önmagukban mind használható infók, mégis félrevittek. Éva. Te rohadt szemét, kit sóztál rám, ha vége van a randinak felhívom és elküldöm melegebb éghajlatra.</p><p>Akkor mégis milyen orvos vagy? Orvos vagy? tettem fel az összegzés eredményét kérdésként.</p>", "<p>Patológus vagyok. Jött az őszinte válasz. Megkönnyebbültem. Annyira, hogy elnevettem magam. Patológus. Hát persze. Patológus. Teljesen rendben van. A patológus orvos. Nem kapkod, megvárják a betegei, nincs műhibaper a nyakában, szabad hétvégék, nincs ügyelet. Kórházban dolgozik, mikroszkóp mellett és még nem szemüveges. Civilizált, kiszámítható, tervezhető dolgok.</p><p>Hogy egészen pontos legyek, igazságügyi orvosszakértő, tette hozzá egy félmondatként.</p>", "<p>Nem tudom, mennyi ideig nézhettem az utolsó mondat hallatán. Talán két másodpercig. Talán húszig. Nem tudom. Ő törte meg a csendet. Boncolok. közölte a rideg valóságot. Igen, erre magamtól is rájöttem, így az infók birtokában. Hirtelen minden mondata megtalálta a helyét. Sajnos. Lenéztem a tányérra. Ott feküdt a macaron másik fele. Tökéletes metszési felszínnel. Kérsz még egyet? kérdezte. Van mandulás is. Mandula vagy mogyoró? Nem mindegy, ki kérdezi jutott eszembe az első gondolatom.</p><p>A sebész vagy a cukrász? A boncmesterre valahogy nem teljesen készültem fel.</p>", "<p>Lelki szemeim előtt tíz évadnyi Helyszinelők sorozat jelent meg, annak minden tudományos és lelki nyűgjével. Végiggondoltam az estét, és arra jutottam, hogy egy próbát megér. Ki tudja hátha érdekes, amit csinál. Kicsit elmosolyodva feltettem a következő kérdést.</p><p>Pisztácia nincs? kérdeztem félve, de azonnal rávágta vigyorogva az egyik kedvenc filmem ikonikus mondatát.</p><p>A pisztácia kifogyott, van vanília, tutti-frutti, karamell, rumos dió és kávé. Csokoládé nem is volt!</p>", "<div class=\"ornament\" style=\"margin-top:45%\">❦</div>"];
+const demo=[
+"A szobában még ott lebegett a reggeli kávé illata. Az ablakon beszűrődő fény végigsimított a régi bútorokon, mintha valamit keresne. A ház csendje ezúttal nem volt üres: apró neszekkel, elhallgatott mondatokkal és régen megőrzött emlékekkel telt meg.",
+"Az asztalon egy megsárgult boríték feküdt. Senki sem tudta pontosan, mikor került oda. A tinta néhol elhalványult, de a betűk még mindig ismerősnek tűntek. Valaki sok évvel korábban gondosan, lassan írhatta őket, talán azért, hogy a mondatoknak legyen idejük megérkezni.",
+"Odakint a fák levelei megmozdultak a szélben. A kertkapu halkan megnyikordult, aztán újra csend lett. Az idő különös módon viselkedett ezen a délutánon: ami tegnap történt, távolinak tetszett, ami évtizedekkel ezelőtt, az pedig egészen közelinek.",
+"A történet nem ott kezdődött, ahol bárki várta volna. Egy jelentéktelennek látszó mozdulattal kezdődött, egy pillantással, amelyet könnyű lett volna észre sem venni. Csakhogy vannak pillanatok, amelyek utólag egész életünk súlyát magukra veszik.",
+"A fiók mélyén egy régi kulcs lapult. A fogai megkoptak, a feje mégis szépen csillogott a délutáni fényben. Nem lehetett tudni, melyik ajtóhoz tartozik, de a kéz, amely megtalálta, azonnal felismerte a súlyát.",
+"Az ember olykor nem a választ keresi, hanem a kérdést, amelyet évekkel korábban elmulasztott feltenni. A csöndben most mindkettő helyet kapott. A ház lassan sötétedni kezdett, a falióra pedig egyenletesen számolta tovább a perceket.",
+"A távoli utcáról lépések hallatszottak. Közeledtek, majd elhaltak. Egy pillanatra úgy tűnt, valaki megállt az ajtó előtt, de a kilincs nem mozdult. Talán nem is kellett: vannak találkozások, amelyekhez nem szükséges kinyitni semmit.",
+"Amikor végül leszállt az este, minden ugyanott maradt. A levél, a kulcs, a csésze az asztalon. Mégis megváltozott valami, amit nem lehetett volna egyetlen mondatban megfogalmazni. A történet talán éppen ezért érdemelte meg, hogy elmeséljék."
+];
+// A teljes novella szövege a feltöltött Word-dokumentumból, eredeti szövegezéssel.
+function pagesFor(index){if(index===0)return samplePages;const offset=index%demo.length;return Array.from({length:16},(_,i)=>{
+ if(i===0)return `<div class="ornament">✦ &nbsp; A NOVELLÁK KÖNYVTÁRA &nbsp; ✦</div><h1>${titles[index]}</h1><div class="ornament">❦</div><p>${demo[offset]}</p>`;
+ const a=demo[(offset+i)%demo.length],b=demo[(offset+i+3)%demo.length];return `<p>${a}</p><p>${b}</p>`;
+});}
+let pages=[];
+function render(){const mobile=window.matchMedia('(max-width:650px)').matches;const n=mobile?1:2;const idx=spread*n;
+ left.innerHTML=pages[idx]||'';right.innerHTML=pages[idx+1]||'';
+ left.scrollTop=0;right.scrollTop=0;
+ document.getElementById('leftNumber').textContent=idx+1<=pages.length?idx+1:'';
+ document.getElementById('rightNumber').textContent=idx+2<=pages.length?idx+2:'';
+ document.getElementById('pageStatus').textContent=mobile?`${idx+1} / ${pages.length} oldal`:`${idx+1}–${Math.min(idx+2,pages.length)} / ${pages.length} oldal`;
+ const prev=idx===0,next=idx+n>=pages.length;
+ for(const id of ['prev','edgePrev'])document.getElementById(id).disabled=prev;
+ for(const id of ['next','edgeNext'])document.getElementById(id).disabled=next;
+}
+function turn(direction){
+ if(turning)return;
+ const mobile=window.matchMedia('(max-width:650px)').matches;
+ const n=mobile?1:2;
+ if((direction<0&&spread===0)||(direction>0&&(spread+1)*n>=pages.length))return;
+ turning=true;
+ const idx=spread*n, nextIdx=(spread+direction)*n;
+ const from=direction>0?(mobile?idx:idx+1):idx;
+ const to=direction>0?nextIdx:(mobile?nextIdx:nextIdx+1);
+ const sheet=document.createElement('div');
+ sheet.className='storybook-sheet '+(direction>0?'forward':'backward');
+ for(const [side,pageNo] of [['front',from],['back',to]]){
+   const face=document.createElement('div');face.className='storybook-face '+side;
+   face.innerHTML='<div class="page-content">'+(pages[pageNo]||'')+'</div><div class="page-number">'+(pageNo+1)+'</div>';
+   sheet.appendChild(face);
+ }
+ book.appendChild(sheet);
+ const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const duration=reduce?40:1850;
+ const start=performance.now();let switched=false;
+ const ease=t=>t*t*(3-2*t);
+ function frame(now){
+   if(!sheet.isConnected){turning=false;return}
+   const t=Math.min(1,(now-start)/duration),q=ease(t);
+   const arch=Math.pow(Math.sin(Math.PI*q),1.35);
+   const angle=(direction>0?-180:180)*q;
+   // Egyetlen, összefüggő papírlap: lágy ív és apró lebbenés.
+   const curve=1-.022*arch;
+   const flutter=0;
+   sheet.style.transform=`rotateY(${angle}deg) scaleX(${curve})`;
+   sheet.style.setProperty('--paper-arch',arch.toFixed(3));
+   if(!switched&&q>=.5){switched=true;spread+=direction;render()}
+   if(t<1)requestAnimationFrame(frame);
+   else{if(!switched){spread+=direction;render()}sheet.remove();turning=false}
+ }
+ requestAnimationFrame(frame);
+}
+
+function showTip(e,g){tip.textContent=titles[Number(g.dataset.i)];tip.classList.add('on');moveTip(e)}
+function moveTip(e){const x=Math.min(e.clientX+18,window.innerWidth-230),y=Math.max(12,e.clientY-52);tip.style.left=Math.max(8,x)+'px';tip.style.top=y+'px'}
+function hideTip(){tip.classList.remove('on')}
+function openBook(g){setCatalog(false);last=g;current=Number(g.dataset.i);pages=pagesFor(current);spread=0;hideTip();reader.classList.add('open');render();document.getElementById('next').focus()}
+for(const g of document.querySelectorAll('.spine')){g.addEventListener('mouseenter',e=>showTip(e,g));g.addEventListener('mousemove',moveTip);g.addEventListener('mouseleave',hideTip);g.addEventListener('click',()=>openBook(g));g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openBook(g)}})}
+function closeBook(){reader.classList.remove('open');book.querySelectorAll('.flip-sheet,.wind-sheet,.storybook-sheet').forEach(x=>x.remove());turning=false;last?.focus()}
+for(const id of ['close','exit'])document.getElementById(id).addEventListener('click',closeBook);
+for(const id of ['next','edgeNext'])document.getElementById(id).addEventListener('click',()=>turn(1));
+for(const id of ['prev','edgePrev'])document.getElementById(id).addEventListener('click',()=>turn(-1));
+document.addEventListener('keydown',e=>{if(!reader.classList.contains('open'))return;if(e.key==='Escape')closeBook();if(e.key==='ArrowRight')turn(1);if(e.key==='ArrowLeft')turn(-1)});
+window.addEventListener('resize',()=>{if(reader.classList.contains('open')){spread=0;render()}});
+
+// A katalógus működő bemutatója; a polccímkék a tervezett tartományokat jelzik.
+const catalogToggle=document.getElementById('catalogToggle');
+const catalogPanel=document.getElementById('catalog');
+function setCatalog(open){catalogPanel.classList.toggle('is-visible',open);catalogToggle.setAttribute('aria-expanded',String(open));if(open)document.getElementById('catalogNumber').focus()}
+catalogToggle.addEventListener('click',()=>setCatalog(!catalogPanel.classList.contains('is-visible')));
+document.addEventListener('pointerdown',e=>{if(catalogPanel.classList.contains('is-visible')&&!catalogPanel.contains(e.target)&&!catalogToggle.contains(e.target))setCatalog(false)});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&catalogPanel.classList.contains('is-visible'))setCatalog(false)});
+const catalogForm=document.getElementById('catalogForm');
+const catalogInput=document.getElementById('catalogNumber');
+const catalogResult=document.getElementById('catalogResult');
+const catalogOpen=document.getElementById('catalogOpen');
+let selectedCatalog=null;
+const ranges=[[1,25,'001–025'],[26,50,'026–050'],[51,75,'051–075'],[76,100,'076–100'],[101,140,'101–140'],[141,150,'Újdonságok · 141–150']];
+function locateNovel(n){
+ document.querySelectorAll('.spine').forEach(g=>g.classList.remove('catalog-highlight'));
+ const range=ranges.find(r=>n>=r[0]&&n<=r[1]);
+ if(!range){catalogResult.textContent='Adj meg egy sorszámot 1 és 150 között.';catalogOpen.classList.remove('show');return}
+ selectedCatalog=n;
+ const title=n===42?'Mandula vagy mogyoró?':`A ${String(n).padStart(3,'0')}. novella`;
+ catalogResult.innerHTML=`<strong>${String(n).padStart(3,'0')}.</strong> ${title}<br>Helye: <strong>${range[2]}</strong> polc`;
+ catalogOpen.classList.add('show');
+ // A látványtervben nyolc eredeti gerinc kattintható; a többi sorszám katalóguson át nyitható.
+ const spine=document.querySelectorAll('.spine')[n>=141?n-141:-1];
+ if(spine)spine.classList.add('catalog-highlight');
+}
+catalogForm.addEventListener('submit',e=>{e.preventDefault();locateNovel(Number(catalogInput.value))});
+catalogOpen.addEventListener('click',()=>{if(selectedCatalog===null)return;const g=document.querySelector('.spine');if(!g)return;openBook(g);current=selectedCatalog===42?0:selectedCatalog%8;pages=selectedCatalog===42?samplePages:pagesFor(current);spread=0;render()});
+</script><style>
+#siteStatus{position:fixed;top:12px;right:12px;z-index:5;background:#24170edb;color:#e9d3a9;padding:7px 12px;border:1px solid #a57f52;border-radius:5px;font:13px Georgia,serif}
+#siteStatus a{color:#f1d7a2} .spine.catalog-highlight .band{fill:#efc47b;filter:drop-shadow(0 0 6px #ffc966)}
+</style><div id="siteStatus">A könyvtár betöltése…</div>
+<script>
+const apiState={novels:[],selected:null};
+const escText=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function novelPages(novel){
+ const chunks=[];const max=880;
+ for(const p of novel.paragraphs){
+  const t=String(p||'').trim();if(!t)continue;
+  const words=t.split(/\s+/);let part='';
+  for(const word of words){if(part && (part+' '+word).length>max){chunks.push(part);part=word}else part+=(part?' ':'')+word}
+  if(part)chunks.push(part);
+ }
+ const out=[`<div class="ornament">✦ &nbsp; ${String(novel.number).padStart(3,'0')} &nbsp; ✦</div><h1>${escText(novel.title)}</h1>`];
+ for(const t of chunks)out.push(`<p>${escText(t)}</p>`);
+ // Repack paragraphs into pages; conservative length avoids overflows in the original antique reader.
+ const result=[];let page=out[0];let len=0;
+ for(const p of out.slice(1)){const plain=p.replace(/<[^>]+>/g,'');if(len+plain.length>780&&len){result.push(page);page='';len=0}page+=p;len+=plain.length}
+ if(page)result.push(page);
+ return result;
+}
+function openNovel(novel){
+ if(!novel)return;
+ setCatalog(false);hideTip();pages=novelPages(novel);spread=0;
+ reader.classList.add('open');render();document.getElementById('next').focus();
+}
+function getNovelByNumber(n){return apiState.novels.find(x=>x.number===n)}
+function refreshSlots(){
+ const sorted=[...apiState.novels].sort((a,b)=>b.number-a.number).slice(0,10).reverse();
+ document.querySelectorAll('.spine').forEach((g,i)=>{
+   const novel=sorted[i];g.dataset.novelNumber=novel?novel.number:'';
+   g.setAttribute('aria-label',novel?`${novel.number}. ${novel.title}`:'Üres könyvhely');
+   g.style.opacity=novel?'1':'.35';
+ });
+ const status=document.getElementById('siteStatus');
+ status.innerHTML=`${apiState.novels.length} novella · <a href="/admin">Szerzői belépés</a>`;
+ catalogInput.max=Math.max(1,...apiState.novels.map(x=>x.number));
+}
+// Capture listeners prevent the old sample-story handlers from opening demo content.
+for(const g of document.querySelectorAll('.spine')){
+ g.addEventListener('click',e=>{e.stopImmediatePropagation();openNovel(getNovelByNumber(Number(g.dataset.novelNumber)))},true);
+ g.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.stopImmediatePropagation();e.preventDefault();openNovel(getNovelByNumber(Number(g.dataset.novelNumber)))}},true);
+ g.addEventListener('mouseenter',e=>{e.stopImmediatePropagation();const n=getNovelByNumber(Number(g.dataset.novelNumber));hideTip();if(n){tip.textContent=`${String(n.number).padStart(3,'0')}. ${n.title}`;tip.classList.add('on');moveTip(e)}},true);
+}
+catalogForm.addEventListener('submit',e=>{
+ e.preventDefault();e.stopImmediatePropagation();const n=Number(catalogInput.value);const novel=getNovelByNumber(n);apiState.selected=novel;
+ if(!novel){catalogResult.textContent='Ehhez a sorszámhoz még nincs feltöltött novella.';catalogOpen.classList.remove('show');return}
+ const latest=[...apiState.novels].sort((a,b)=>b.number-a.number).slice(0,10).some(x=>x.number===n);
+ const shelf=latest?'Újdonságok':`${String(Math.floor((n-1)/25)*25+1).padStart(3,'0')}–${String(Math.floor((n-1)/25)*25+25).padStart(3,'0')}`;
+ catalogResult.innerHTML=`<strong>${String(n).padStart(3,'0')}.</strong> ${escText(novel.title)}<br>Helye: <strong>${shelf}</strong>`;
+ catalogOpen.classList.add('show');
+ document.querySelectorAll('.spine').forEach(g=>g.classList.toggle('catalog-highlight',Number(g.dataset.novelNumber)===n));
+},true);
+catalogOpen.addEventListener('click',e=>{e.stopImmediatePropagation();openNovel(apiState.selected)},true);
+fetch('novellak.json').then(r=>r.json()).then(data=>{apiState.novels=data;refreshSlots()}).catch(()=>{document.getElementById('siteStatus').textContent='A szerver nem érhető el.'});
+</script><style>
+#allBookHotspots{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
+#allBookHotspots .bookslot{pointer-events:all;cursor:pointer;fill:transparent;stroke:none}
+#allBookHotspots .bookslot:focus{stroke:#f2ce84;stroke-width:2;outline:none}
+#allBookHotspots .bookmark{fill:#a1263c;stroke:#42131a;stroke-width:.6;pointer-events:none;filter:drop-shadow(0px 1px 1px #000)}
+#allBookHotspots .bookslot:hover+.bookmark,#allBookHotspots .bookslot:focus+.bookmark{fill:#ed8a81}
+#allBookHotspots .bookslot.highlight{stroke:#f2d184;stroke-width:2;filter:drop-shadow(0 0 4px #eac77a)}
+</style>
+<script>
+// Positions in original 1534 x 960 image coordinates, mapped through SVG viewBox.
+// Book rectangles remain proportional on screen resizing.
+(function(){
+ const stage=document.querySelector('.stage');if(!stage)return;
+ const ns='http://www.w3.org/2000/svg';
+ const svg=document.createElementNS(ns,'svg');svg.setAttribute('id','allBookHotspots');svg.setAttribute('viewBox','0 0 1534 960');svg.setAttribute('preserveAspectRatio','xMidYMid meet');svg.setAttribute('aria-label','Kattintható könyvgerincek');
+ stage.appendChild(svg);
+ const layout=[
+  {kind:'latest',x:32,y:187,w:384,h:123,capacity:10},
+  {start:1,end:25,x:489,y:185,w:552,h:126},
+  {start:26,end:50,x:31,y:368,w:389,h:115},
+  {start:51,end:75,x:489,y:367,w:554,h:117},
+  {start:76,end:100,x:30,y:553,w:391,h:148},
+  {start:101,end:140,x:488,y:551,w:555,h:149}
+ ];
+ function addSlot(n,x,y,w,h){
+  const g=document.createElementNS(ns,'g');g.dataset.number=n;
+  const rect=document.createElementNS(ns,'rect');rect.setAttribute('class','bookslot');rect.setAttribute('x',x);rect.setAttribute('y',y);rect.setAttribute('width',w);rect.setAttribute('height',h);rect.setAttribute('tabindex','0');rect.setAttribute('role','button');
+  const mark=document.createElementNS(ns,'rect');mark.setAttribute('class','bookmark');mark.setAttribute('x',x+Math.max(1,w*.18));mark.setAttribute('y',y+2);mark.setAttribute('width',Math.max(3,w*.55));mark.setAttribute('height',3.2);
+  g.append(rect,mark);svg.appendChild(g);
+  const show=e=>{const novel=window.libraryNovels?.find(a=>a.number===n);if(!novel)return;const t=document.querySelector('.tip');if(!t)return;t.textContent=String(n).padStart(3,'0')+'. '+novel.title;t.classList.add('on');const pos=e.clientX===undefined?rect.getBoundingClientRect():{left:e.clientX,top:e.clientY};t.style.left=Math.min(window.innerWidth-260,(pos.left||0)+12)+'px';t.style.top=Math.max(12,(pos.top||0)-45)+'px'};
+  rect.addEventListener('mouseenter',show);rect.addEventListener('mousemove',show);
+  rect.addEventListener('mouseleave',()=>document.querySelector('.tip')?.classList.remove('on'));
+  rect.addEventListener('focus',show);rect.addEventListener('blur',()=>document.querySelector('.tip')?.classList.remove('on'));
+  const open=()=>{const novel=window.libraryNovels?.find(a=>a.number===n);if(novel)openNovel(novel)};
+  rect.addEventListener('click',open);rect.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
+  return g;
+ }
+ const slots=[];
+ for(const row of layout){
+  const count=row.capacity||row.end-row.start+1;
+  for(let i=0;i<count;i++){
+   const w=row.w/count, x=row.x+i*w;
+   slots.push({g:addSlot(0,x+1,row.y+3,Math.max(6,w-2),row.h-7),row,index:i});
+  }
+ }
+ function update(){
+  const all=window.libraryNovels||[];const sorted=[...all].sort((a,b)=>a.number-b.number);
+  const latest=sorted.slice(-10);const archived=sorted.slice(0,-10);
+  for(const slot of slots){
+   const {row,index,g}=slot;
+   const novel=row.kind==='latest'?latest[index]:archived.filter(n=>n.number>=row.start&&n.number<=row.end)[index];
+   const n=novel?.number||0;g.dataset.number=n;
+   const rect=g.querySelector('.bookslot');rect.setAttribute('aria-label',novel?`${String(n).padStart(3,'0')}. ${novel.title}`:'Üres könyvhely');
+   g.style.display=novel?'':'none';
+   // Listeners resolve the number from the group dynamically.
+  }
+ }
+ // Event listeners above are bound at creation, so route interactions via live group number.
+ for(const g of svg.children){
+  const rect=g.querySelector('.bookslot');
+  const fresh=rect.cloneNode(true);rect.replaceWith(fresh);
+  const get=()=>window.libraryNovels?.find(a=>a.number===Number(g.dataset.number));
+  const tip=document.querySelector('.tip');
+  function show(e){const n=get();if(!n||!tip)return;tip.textContent=`${String(n.number).padStart(3,'0')}. ${n.title}`;tip.classList.add('on');const r=fresh.getBoundingClientRect();tip.style.left=Math.min(window.innerWidth-250,r.left+10)+'px';tip.style.top=Math.max(10,r.top-42)+'px'}
+  fresh.addEventListener('mouseenter',show);fresh.addEventListener('focus',show);
+  fresh.addEventListener('mouseleave',()=>tip?.classList.remove('on'));fresh.addEventListener('blur',()=>tip?.classList.remove('on'));
+  fresh.addEventListener('click',()=>{const n=get();if(n)openNovel(n)});
+  fresh.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();const n=get();if(n)openNovel(n)}});
+ }
+ window.updateBookSlots=update;
+ // Poll only until initial API request resolves; later changes arrive on page reload.
+ fetch('novellak.json').then(r=>r.json()).then(data=>{window.libraryNovels=data;update();}).catch(()=>{});
+ // Make search highlight the exact mapped spine.
+ const form=document.getElementById('catalogForm');
+ form?.addEventListener('submit',()=>{setTimeout(()=>{const n=Number(document.getElementById('catalogNumber').value);for(const g of svg.children)g.querySelector('.bookslot').classList.toggle('highlight',Number(g.dataset.number)===n)},0)});
+})();
+</script></body></html>
